@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
+      <dl>
+        <dt>Title:
+        <dd><input type="text" size="30" name="title">
+        <dt>Search:
+        <dd><textarea name="text" rows="5" cols="40"></textarea>
+        <dd><input type="submit" value="Search">
+      </dl>
+    </form>
+  {% endif %}
+  <ul class="entries">
+  {% for entry in entries %}
+    <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
+    <h3>Twitter Results</h3>
+    {% for tweet in results.twitter%}
+        <p>{{tweet.text}}</p>
+    {% endfor %}
+
+    <h3>wikipedia results</h3>
+    {% for wiki in results.wiki%}
+        <p>{{wiki}}</p>    
+    {% endfor %}
+
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
