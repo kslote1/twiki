@@ -1,5 +1,10 @@
 Intallation:
 
+Get consumer keys and access tokens from twitter.
+Fill them out in twitter_config.ini.
+    
+    cp twitter.ini.sample twitter.ini
+
 make your virtual enviornment:
 
 user@ubuntu:~/home$virtualenv virt

@@ -3,10 +3,10 @@
   {% if session.logged_in %}
     <form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
       <dl>
-        <dt>Title:
-        <dd><input type="text" size="30" name="title">
+       <!-- <dt>Title:
+       <!--  <dd><input type="text" size="30" name="title">-->
         <dt>Search:
-        <dd><textarea name="text" rows="5" cols="40"></textarea>
+        <dd><textarea name="search" rows="1" cols="40"></textarea>
         <dd><input type="submit" value="Search">
       </dl>
     </form>
@@ -16,12 +16,19 @@
     <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
     <h3>Twitter Results</h3>
     {% for tweet in results.twitter%}
-        <p>{{tweet.text}}</p>
+           <blockquote class="twitter-tweet">
+           <a href="https://twitter.com/share" class="twitter-share-button" data-count="none">Tweet</a></br>
+           {{tweet.text}}</br>
+           <a href="{{tweet.user_url}}">@{{tweet.user_name}}</a>
+            </blockquote>
+        <hr>
     {% endfor %}
 
     <h3>wikipedia results</h3>
     {% for wiki in results.wiki%}
-        <p>{{wiki}}</p>    
+        <a href="{{ wiki.url }}">{{ wiki.result }}:</a>
+        {{wiki.summary}} </br>
+        <hr>
     {% endfor %}
 
   {% else %}
