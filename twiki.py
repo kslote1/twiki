@@ -1,27 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-    Flaskr
-    ~~~~~~
-    A microblog example application written as Flask tutorial with
-    Flask and sqlite3.
-    :copyright: (c) 2015 by Armin Ronacher.
-    :license: BSD, see LICENSE for more details.
+  Fun app that combines twitter ad wikipedia's search api.
+  This application borrows heavily from from the flaskr web app example. 
 """
 
 import os
 from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
-#<---- api
+#<---- wrapper for twitter and wikipedia api
 from search_api import search
 
+__author__ = "Kevin Slote"
 
 # create our little application :)
 app = Flask(__name__)
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'flaskr.db'),
+    DATABASE=os.path.join(app.root_path, 'twiki.db'),
     DEBUG=True,
     SECRET_KEY='development key',
     USERNAME='admin',
@@ -112,4 +109,5 @@ def login():
 def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
-    return redirect(url_for('show_entries'))
+    return render_template('login.html', error=None)
+

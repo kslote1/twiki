@@ -6,33 +6,31 @@ import ConfigParser
 
 
 #get these from a config file
-
-config = ConfigParser.ConfigParser()
-config.read('twitter.ini')
-consumer_key = config.get('twitter', 'consumer_key')
-consumer_secret = config.get('twitter', 'consumer_secret')
-access_token_key = config.get('twitter', 'access_token_key')
-access_token_secret = config.get('twitter', 'access_token_secret')
+def get_config():
+    config = ConfigParser.ConfigParser()
+    config.read('twitter.ini')
+    return {'consumer_key': config.get('twitter', 'consumer_key'),
+    'consumer_secret': config.get('twitter', 'consumer_secret'),
+    'access_token_key': config.get('twitter', 'access_token_key'),
+    'access_token_secret': config.get('twitter', 'access_token_secret')}
 
 def twitter_api():
-    return Api(consumer_key=consumer_key,
-               consumer_secret=consumer_secret,
-               access_token_key=access_token_key,
-               access_token_secret=access_token_secret)
+    config = get_config()
+    return Api(consumer_key=config['consumer_key'],
+               consumer_secret=config['consumer_secret'],
+               access_token_key=config['access_token_key'],
+               access_token_secret=config['access_token_secret'])
 
 API = twitter_api()
 
 def search_twitter(concept):
     results = []
     try:
-        for result in API.GetSearch(concept):
-            url = tweet_url_from_obj(result)     
+        for result in API.GetSearch(concept):  
             results.append(type('tweet', (), {'text': result.text,
-                                              'url': url,
                                               'id': result.id,
                                               'user_name': result.user.screen_name,
-                                              'user_url':result.user.url,
-                                              'hashtags':[result.hashtags[i].text for i in range(len(result.hashtags))]}))
+                                              'user_url':result.user.url}))
     except TwitterError as e:
         pass
     return results
